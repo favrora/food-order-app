@@ -1,9 +1,11 @@
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, removeFromCart } from "../store/cartSlice";
 import { useGetProductsByCategoryQuery } from "../store/apiSlice";
 
-const ProductList = ({ category, addToCart }) => {
-  const { data: products, error, isLoading } = useGetProductsByCategoryQuery(category, {
-    skip: !category,
-  });
+const ProductList = ({ category }) => {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const { data: products, error, isLoading } = useGetProductsByCategoryQuery(category, { skip: !category });
 
   if (!category) return <p>Select a category</p>;
   if (isLoading) return <p>Loading products...</p>;
@@ -11,20 +13,51 @@ const ProductList = ({ category, addToCart }) => {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      {products.map(({ name, rating_quality }) => (
-        <div key={name} className="p-4 border rounded flex items-center justify-between">
-          <div>
-            <h3 className="font-bold">{name}</h3>
-            <p className="text-lg font-semibold">{rating_quality} €</p>
-          </div>
-          <button 
-            className="w-10 h-10 flex items-center justify-center bg-white text-black border border-gray-300 rounded-full cursor-pointer text-xl font-bold transition-colors hover:bg-gray-200 active:bg-gray-300"
-            onClick={() => addToCart({ name, rating_quality })}
+      {products.map(({ name, french_name, rating_quality }) => {
+        const cartItem = cartItems.find((item) => item.name === name);
+        const quantity = cartItem ? cartItem.quantity : 0;
+        const inCart = quantity > 0;
+
+        return (
+          <div
+            key={name}
+            className={`p-4 shadow-md bg-white rounded-xl flex items-center justify-between border ${
+              inCart ? "border-yellow-500" : "border-gray-300"
+            }`}
           >
-            +
-          </button>
-        </div>
-      ))}
+            <div>
+              <h3 className="font-bold">{name}</h3>
+              <h4 className="text-gray-500">{french_name}</h4>
+              <p className="text-lg font-semibold">€{rating_quality}</p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {inCart && (
+                <button
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 transition-colors text-black font-bold cursor-pointer border border-gray-200"
+                  onClick={() => dispatch(removeFromCart(name))}
+                >
+                  -
+                </button>
+              )}
+
+              {inCart && <span className="text-lg font-semibold">{quantity}</span>}
+
+              <button
+                className={`w-8 h-8 flex items-center justify-center rounded-full font-bold transition-colors text-black cursor-pointer ${
+                  inCart ? 
+                   "bg-white hover:bg-gray-200 border border-gray-200"
+                   :
+                   "bg-yellow-500 hover:bg-yellow-600"
+                }`}
+                onClick={() => dispatch(addToCart({ name, french_name, rating_quality }))}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
