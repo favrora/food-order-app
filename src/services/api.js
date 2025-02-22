@@ -1,40 +1,26 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getCachedData, setCachedData } from './cache';
 
-const BASE_URL = 'https://foodprint.p.rapidapi.com/api/foodprint/';
+const API_URL = import.meta.env.VITE_API_URL;
 const HEADERS = {
-  'x-rapidapi-host': 'foodprint.p.rapidapi.com',
-  'x-rapidapi-key': '0e0b5e80e5msh7e16c53a5b27a64p13843bjsna871f39189ca',
+  'x-rapidapi-host': import.meta.env.VITE_RAPIDAPI_HOST,
+  'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
 };
-const CACHE_EXPIRATION = 1000 * 60 * 60 * 24; // 24 hours
 
 const fetchWithCache = async (endpoint) => {
-  const url = BASE_URL + endpoint;
-  const now = Date.now();
+  const url = API_URL + endpoint;
+  const cachedData = getCachedData(url);
 
-  try {
-    const cached = localStorage.getItem(url);
-    if (cached) {
-      const { data, timestamp } = JSON.parse(cached);
-      if (
-        Array.isArray(data) &&
-        data.length &&
-        now - timestamp < CACHE_EXPIRATION
-      ) {
-        return data;
-      }
-    }
-  } catch (error) {
-    console.error('Error parsing cache:', error);
-  }
+  if (cachedData) return cachedData;
 
   try {
     const response = await fetch(url, { headers: HEADERS });
     if (!response.ok) throw new Error(`API error: ${response.status}`);
 
     const data = await response.json();
-    if (Array.isArray(data) && data.length) {
-      localStorage.setItem(url, JSON.stringify({ data, timestamp: now }));
-    }
+
+    setCachedData(url, data);
+
     return data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -44,7 +30,7 @@ const fetchWithCache = async (endpoint) => {
 
 export const api = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
   endpoints: (builder) => ({
     getCategories: builder.query({
       queryFn: () => fetchWithCache('getCategories').then((data) => ({ data })),

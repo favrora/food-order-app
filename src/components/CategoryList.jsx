@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetCategoriesQuery } from '../services/api';
-import { setCategory } from '../store/slices/categorySlice';
+import { setCategory } from '../redux/slices/categorySlice';
 
 const CategoryList = () => {
   const dispatch = useDispatch();

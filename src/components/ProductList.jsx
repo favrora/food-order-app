@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, removeFromCart } from '../store/slices/cartSlice';
+import { addToCart, removeFromCart } from '../redux/slices/cartSlice';
 import { useGetProductsByCategoryQuery } from '../services/api';
 import PropTypes from 'prop-types';
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearCart } from '../store/slices/cartSlice';
+import { clearCart } from '../redux/slices/cartSlice';
 import OrderStatus from './OrderStatus';
 import PropTypes from 'prop-types';
 

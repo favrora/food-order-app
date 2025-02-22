@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategory } from './store/slices/categorySlice';
+import { setCategory } from './redux/slices/categorySlice';
 import { useGetCategoriesQuery } from './services/api';
-import { loadCart } from './store/slices/cartSlice';
+import { loadCart } from './redux/slices/cartSlice';
 import Header from './components/Header';
 import CategoryList from './components/CategoryList';
 import ProductList from './components/ProductList';

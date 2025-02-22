@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setLocation } from '../store/slices/locationSlice';
+import { setLocation } from '../redux/slices/locationSlice';
 
 const locations = ['New York', 'Los Angeles', 'Chicago', 'Dubai', 'London'];
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart, removeFromCart } from '../store/slices/cartSlice';
+import { addToCart, removeFromCart } from '../redux/slices/cartSlice';
 import CheckoutForm from './CheckoutForm';
 
 const Cart = () => {
