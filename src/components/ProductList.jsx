@@ -1,7 +1,7 @@
 import { useGetProductsByCategoryQuery } from "../store/apiSlice";
 
 const ProductList = ({ category, addToCart }) => {
-  const { data: products, error, isLoading, refetch } = useGetProductsByCategoryQuery(category, {
+  const { data: products, error, isLoading } = useGetProductsByCategoryQuery(category, {
     skip: !category,
   });
 
@@ -11,11 +11,10 @@ const ProductList = ({ category, addToCart }) => {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      {products.map(({ name, french_name, rating_quality }) => (
+      {products.map(({ name, rating_quality }) => (
         <div key={name} className="p-4 border rounded flex items-center justify-between">
           <div>
             <h3 className="font-bold">{name}</h3>
-            <p className="text-sm text-gray-500">{french_name}</p>
             <p className="text-lg font-semibold">{rating_quality} €</p>
           </div>
           <button 
@@ -26,9 +25,6 @@ const ProductList = ({ category, addToCart }) => {
           </button>
         </div>
       ))}
-      <button onClick={refetch} className="px-4 py-2 bg-gray-300 text-black rounded-full cursor-pointer">
-        🔄 Refresh
-      </button>
     </div>
   );
 };
