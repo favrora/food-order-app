@@ -1,21 +1,21 @@
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setLocation } from "../store/locationSlice";
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setLocation } from '../store/slices/locationSlice';
 
-const locations = ["New York", "Los Angeles", "Chicago", "Dubai", "London"];
+const locations = ['New York', 'Los Angeles', 'Chicago', 'Dubai', 'London'];
 
 const Header = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const savedLocation = localStorage.getItem("selectedLocation");
+    const savedLocation = localStorage.getItem('selectedLocation');
     if (savedLocation) dispatch(setLocation(savedLocation));
-  }, []);
+  }, [dispatch]);
 
   const handleSelect = (location) => {
     dispatch(setLocation(location));
-    localStorage.setItem("selectedLocation", location);
+    localStorage.setItem('selectedLocation', location);
     setIsOpen(false);
   };
 
@@ -47,14 +47,14 @@ const Header = () => {
           >
             <button
               onClick={closeModal}
-              className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-xl font-bold transition-colors shadow-md cursor pointer"
+              className="absolute top-3 right-3 w-8 h-8 flex cursor-pointer items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-xl font-bold transition-colors shadow-md cursor pointer"
             >
               ×
             </button>
 
             <h2 className="text-lg font-bold mb-4">Select Location</h2>
 
-            <ul>
+            <ul className="max-h-60 overflow-y-auto p-2">
               {locations.map((loc) => (
                 <li
                   key={loc}

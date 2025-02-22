@@ -1,11 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../store/cartSlice";
-import { useGetProductsByCategoryQuery } from "../store/apiSlice";
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, removeFromCart } from '../store/slices/cartSlice';
+import { useGetProductsByCategoryQuery } from '../services/api';
+import PropTypes from 'prop-types';
 
 const ProductList = ({ category }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
-  const { data: products, error, isLoading } = useGetProductsByCategoryQuery(category, { skip: !category });
+  const {
+    data: products,
+    error,
+    isLoading,
+  } = useGetProductsByCategoryQuery(category, { skip: !category });
 
   if (!category) return <p>Select a category</p>;
   if (isLoading) return <p>Loading products...</p>;
@@ -22,7 +27,7 @@ const ProductList = ({ category }) => {
           <div
             key={name}
             className={`p-4 shadow-md bg-white rounded-xl flex items-center justify-between border ${
-              inCart ? "border-yellow-500" : "border-gray-300"
+              inCart ? 'border-yellow-500' : 'border-gray-300'
             }`}
           >
             <div>
@@ -41,16 +46,19 @@ const ProductList = ({ category }) => {
                 </button>
               )}
 
-              {inCart && <span className="text-lg font-semibold">{quantity}</span>}
+              {inCart && (
+                <span className="text-lg font-semibold">{quantity}</span>
+              )}
 
               <button
                 className={`w-8 h-8 flex items-center justify-center rounded-full font-bold transition-colors text-black cursor-pointer ${
-                  inCart ? 
-                   "bg-white hover:bg-gray-200 border border-gray-200"
-                   :
-                   "bg-yellow-500 hover:bg-yellow-600"
+                  inCart
+                    ? 'bg-white hover:bg-gray-200 border border-gray-200'
+                    : 'bg-yellow-500 hover:bg-yellow-600'
                 }`}
-                onClick={() => dispatch(addToCart({ name, french_name, rating_quality }))}
+                onClick={() =>
+                  dispatch(addToCart({ name, french_name, rating_quality }))
+                }
               >
                 +
               </button>
@@ -60,6 +68,10 @@ const ProductList = ({ category }) => {
       })}
     </div>
   );
+};
+
+ProductList.propTypes = {
+  category: PropTypes.string,
 };
 
 export default ProductList;

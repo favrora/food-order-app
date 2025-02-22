@@ -1,18 +1,18 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { apiSlice } from "./apiSlice";
-import categoryReducer from "./categorySlice";
-import productReducer from "./productSlice";
-import cartReducer from "./cartSlice";
-import locationReducer from "./locationSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { api } from '../services/api';
+import categoryReducer from './slices/categorySlice';
+import productReducer from './slices/productSlice';
+import cartReducer from './slices/cartSlice';
+import locationReducer from './slices/locationSlice';
 
 export default configureStore({
   reducer: {
-    [apiSlice.reducerPath]: apiSlice.reducer,
+    [api.reducerPath]: api.reducer,
     categories: categoryReducer,
     products: productReducer,
     cart: cartReducer,
     location: locationReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+    getDefaultMiddleware().concat(api.middleware),
 });
