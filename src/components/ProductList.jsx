@@ -76,7 +76,7 @@ const ProductList = ({ category }) => {
           return (
             <div
               key={`${name}-${index}`}
-              className={`p-2 custom-boxShadow bg-white rounded-[18px] flex items-center border-2 gap-4 ${
+              className={`p-1 custom-boxShadow bg-white rounded-[18px] flex items-center border-2 gap-4 ${
                 inCart ? 'border-brandYellow' : 'border-transparent'
               }`}
             >
@@ -88,7 +88,7 @@ const ProductList = ({ category }) => {
                 />
               </div>
 
-              <div className="flex flex-col flex-1 gap-y-2">
+              <div className="p-1 flex flex-col flex-1 gap-y-2">
                 <h3 className="font-bold text-lg">{name}</h3>
                 <h4 className="text-gray-500 text-sm">{french_name}</h4>
 
