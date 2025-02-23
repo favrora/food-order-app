@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategory } from './redux/slices/categorySlice';
 import { useGetCategoriesQuery } from './services/api';
 import { loadCart } from './redux/slices/cartSlice';
-import Header from './components/Header';
+import Header from './layout/Header';
 import CategoryList from './components/CategoryList';
 import ProductList from './components/ProductList';
 import Cart from './components/Cart';
@@ -14,20 +14,24 @@ const App = () => {
     (state) => state.categories.selectedCategory
   );
 
-  useGetCategoriesQuery();
+  const { data: categories } = useGetCategoriesQuery();
 
   useEffect(() => {
     const savedCategory = localStorage.getItem('selectedCategory');
     if (savedCategory) dispatch(setCategory(savedCategory));
 
-    // load card data from localStorage
     dispatch(loadCart());
   }, [dispatch]);
+
+  const handleCategorySelect = useCallback(
+    (category) => dispatch(setCategory(category)),
+    [dispatch]
+  );
 
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
-      <CategoryList onSelect={(category) => dispatch(setCategory(category))} />
+      <CategoryList onSelect={handleCategorySelect} categories={categories} />
       <ProductList category={selectedCategory} />
       <Cart />
     </div>

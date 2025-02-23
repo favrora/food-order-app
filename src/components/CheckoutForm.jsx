@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useCreateOrderMutation } from '../services/api';
 import { clearCart } from '../redux/slices/cartSlice';
 import { setLocation } from '../redux/slices/locationSlice';
 import OrderStatus from './OrderStatus';
@@ -9,36 +10,40 @@ import phoneIcon from '../assets/icons/phone.svg';
 import commentIcon from '../assets/icons/comment.svg';
 
 const CheckoutForm = ({ onClose }) => {
-  const selectedAddress = useSelector((state) => state.location);
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const selectedAddress = useSelector((state) => state.location);
+  const [createOrder, { isLoading, isSuccess }] = useCreateOrderMutation();
 
   const [formData, setFormData] = useState({
-    address: selectedAddress || '',
+    address: selectedAddress,
     phone: '',
     comment: '',
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isOrderPlaced, setIsOrderPlaced] = useState(false);
-
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const isDisabled = useMemo(
+    () => isLoading || cartItems.length === 0,
+    [isLoading, cartItems]
+  );
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (isDisabled) return;
 
-    dispatch(setLocation(formData.address));
-    setIsSubmitting(false);
-    dispatch(clearCart());
-    setIsOrderPlaced(true);
-  };
+      await createOrder({ cartItems, deliveryData: formData });
+      dispatch(setLocation(formData.address));
+      dispatch(clearCart());
+    },
+    [cartItems, formData, createOrder, dispatch, isDisabled]
+  );
 
-  if (isOrderPlaced) return <OrderStatus onClose={onClose} />;
+  if (isSuccess) return <OrderStatus onClose={onClose} />;
 
   return (
     <div
@@ -51,7 +56,8 @@ const CheckoutForm = ({ onClose }) => {
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 w-10 h-10 flex cursor-pointer items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[25px] font-bold transition-colors shadow-md cursor pointer"
+          className="absolute top-3 right-3 w-10 h-10 flex cursor-pointer 
+          items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[25px] font-bold transition-colors shadow-md"
         >
           ×
         </button>
@@ -60,67 +66,45 @@ const CheckoutForm = ({ onClose }) => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Delivery Address */}
-          <div className="flex items-center w-full gap-3">
-            <span className="w-8 text-xl">
-              <img src={locationIcon} alt="Location Icon" />
-            </span>
-            <div className="w-full">
-              <label className="block mb-1">Delivery address</label>
-              <input
-                type="text"
-                name="address"
-                placeholder=""
-                value={formData.address}
-                onChange={handleChange}
-                required
-                className="w-full p-1 bg-transparent border-[0.9px] border-[#3C3C434A] rounded-[9px] outline-none caret-[#007AFF]"
-              />
-            </div>
-          </div>
+          <InputField
+            icon={locationIcon}
+            label="Delivery address"
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            required
+          />
 
           {/* Phone Number */}
-          <div className="flex items-center w-full gap-3">
-            <span className="w-8 text-xl">
-              <img src={phoneIcon} alt="Phone Icon" />
-            </span>
-            <div className="w-full">
-              <label className="block mb-1">Phone number</label>
-              <input
-                type="tel"
-                name="phone"
-                placeholder="+370"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                className="w-full p-1 bg-transparent border-[0.9px] border-[#3C3C434A] rounded-[9px] outline-none caret-[#007AFF]"
-              />
-            </div>
-          </div>
+          <InputField
+            icon={phoneIcon}
+            label="Phone number"
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="+370"
+            required
+          />
 
           {/* Comment to Courier */}
-          <div className="flex items-center w-full gap-3">
-            <span className="w-8 text-xl">
-              <img src={commentIcon} alt="Comment Icon" />
-            </span>
-            <div className="w-full">
-              <label className="block mb-1">Comment to courier</label>
-              <input
-                type="text"
-                name="comment"
-                placeholder=""
-                value={formData.comment}
-                onChange={handleChange}
-                className="w-full p-1 bg-transparent border-[0.9px] border-[#3C3C434A] rounded-[9px] outline-none caret-[#007AFF]"
-              />
-            </div>
-          </div>
+          <InputField
+            icon={commentIcon}
+            label="Comment to courier"
+            type="text"
+            name="comment"
+            value={formData.comment}
+            onChange={handleChange}
+          />
 
           <button
             type="submit"
-            className="w-full bg-brandYellow hover:bg-yellow-600 transition-colors text-black cursor-pointer rounded-full py-2 text-lg shadow-[0px_4px_12px_0px_#F9BA4266]"
-            disabled={isSubmitting}
+            className="w-full bg-brandYellow hover:bg-yellow-600 transition-colors text-black cursor-pointer 
+              rounded-full py-2 text-lg shadow-[0px_4px_12px_0px_#F9BA4266] disabled:bg-gray-200 disabled:cursor-not-allowed"
+            disabled={isDisabled}
           >
-            {isSubmitting ? 'Sending...' : 'Submit'}
+            {isLoading ? 'Sending...' : 'Submit'}
           </button>
         </form>
       </div>
@@ -128,8 +112,28 @@ const CheckoutForm = ({ onClose }) => {
   );
 };
 
+const InputField = ({ icon, label, ...props }) => (
+  <div className="flex items-center w-full gap-3">
+    <span className="w-8 text-xl">
+      <img src={icon} alt={`${label} Icon`} />
+    </span>
+    <div className="w-full">
+      <label className="block mb-1">{label}</label>
+      <input
+        className="w-full p-1 bg-transparent border-[0.9px] border-[#3C3C434A] rounded-[9px] outline-none caret-[#007AFF]"
+        {...props}
+      />
+    </div>
+  </div>
+);
+
 CheckoutForm.propTypes = {
-  onClose: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+InputField.propTypes = {
+  icon: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default CheckoutForm;

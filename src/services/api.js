@@ -18,7 +18,6 @@ const fetchWithCache = async (endpoint) => {
     if (!response.ok) throw new Error(`API error: ${response.status}`);
 
     const data = await response.json();
-
     setCachedData(url, data);
 
     return data;
@@ -35,11 +34,63 @@ export const api = createApi({
     getCategories: builder.query({
       queryFn: () => fetchWithCache('getCategories').then((data) => ({ data })),
     }),
+
     getProductsByCategory: builder.query({
       queryFn: (category) =>
         fetchWithCache(`category/${category}`).then((data) => ({ data })),
     }),
+
+    createOrder: builder.mutation({
+      // Real API request (uncomment when API is available)
+      /*
+      query: ({ cartItems, deliveryData }) => ({
+        url: 'create-order',
+        method: 'POST',
+        body: {
+          products: cartItems.map((item) => item.name),
+          delivery: deliveryData,
+        },
+      }),
+      */
+
+      // Mocked API response (instant success)
+      queryFn: async ({ cartItems, deliveryData }) => {
+        console.log({
+          message: 'Order successfully created!',
+          products: cartItems.map((item) => item.name),
+          delivery: deliveryData,
+        });
+
+        return { data: { success: true } };
+      },
+    }),
+
+    getOrderStatus: builder.query({
+      // Real API request (uncomment when API is available)
+      /*
+      query: (orderId) => ({
+        url: `order-status/${orderId}`,
+        method: 'GET',
+      }),
+      */
+
+      // Mocked API response (instant success)
+      queryFn: async () => {
+        let status = 0;
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            status = 1;
+            resolve({ data: { status } });
+          }, 3000);
+        });
+      },
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery, useGetProductsByCategoryQuery } = api;
+export const {
+  useGetCategoriesQuery,
+  useGetProductsByCategoryQuery,
+  useCreateOrderMutation,
+  useGetOrderStatusQuery,
+} = api;

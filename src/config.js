@@ -6,8 +6,4 @@ export const LOCATIONS = [
   'Šiauliai',
   'Panevėžys',
   'Alytus',
-  'Marijampolė',
-  'Mažeikiai',
-  'Jonava',
-  'Utena',
 ];
