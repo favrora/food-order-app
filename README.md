@@ -4,6 +4,8 @@ Food Order App is a simple demo React application for ordering food with the abi
 
 ## Demo
 
+Demo url: [`https://food-order-appx.netlify.app/`](https://food-order-appx.netlify.app/)
+
 <p>
   <img src="https://github.com/favrora/food-order-app/blob/master/public/demo.jpg?raw=true" width="60%">
 </p>
