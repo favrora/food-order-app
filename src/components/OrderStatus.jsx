@@ -17,16 +17,16 @@ const OrderStatus = ({ onClose }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-white flex flex-col items-center justify-center p-6">
+    <div className="fixed inset-0 bg-white flex flex-col items-center p-6 h-[100vh] overflow-y-auto custom-scrollbar">
       <button
-        className="absolute top-4 left-4 w-10 h-10 flex items-center justify-center bg-brandYellow hover:bg-yellow-600 transition-colors cursor-pointer rounded-full py-2 custom-boxShadow round-full"
+        className="absolute top-4 left-4 w-[42px] h-[42px] flex items-center justify-center bg-brandYellow hover:bg-yellow-600 transition-colors cursor-pointer rounded-full py-2 custom-boxShadow round-full"
         onClick={onClose}
       >
         <img src={arrowBackIcon} alt="Arrow Back Icon" />
       </button>
 
       <div
-        className={`w-[165px] h-[165px] flex items-center justify-center border-10 rounded-full mb-6 
+        className={`w-[165px] h-[165px] flex items-center justify-center border-10 rounded-full mb-6 flex-shrink-0 
           ${status === 0 ? 'border-brandYellow' : 'border-green-500'}`}
       >
         {status === 0 ? (

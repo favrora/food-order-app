@@ -30,23 +30,23 @@ const CategoryList = () => {
     : categories;
 
   return (
-    <div className="px-4 pt-4 flex gap-2">
-      <div>
+    <div className="px-4 flex gap-2">
+      <div className="py-4">
         <button
           onClick={() => setIsOpen(true)}
-          className="w-[40px] h-[40px] p-2 my-4 flex items-center justify-center bg-brandYellow hover:bg-yellow-600 rounded-full cursor-pointer"
+          className="w-[43px] h-[43px] flex items-center justify-center bg-brandYellow custom-boxShadow hover:bg-yellow-600 rounded-full cursor-pointer"
         >
           <img src={arrowDownIcon} alt="Arrow Down Icon" />
         </button>
       </div>
 
-      <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
+      <div className="flex items-center py-4 gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
         {/* Display categories */}
-        <div className="flex gap-2">
+        <div className="flex h-full gap-2">
           {sortedCategories.map((category) => (
             <button
               key={category}
-              className={`px-4 py-2 rounded-full cursor-pointer transition-colors 
+              className={`px-4 py-2 rounded-full cursor-pointer transition-colors custom-boxShadow 
                 ${category === selectedCategory ? 'bg-brandYellow text-black hover:bg-yellow-600' : 'bg-white text-black hover:bg-gray-200'}`}
               onClick={() => dispatch(setCategory(category))}
             >
@@ -62,7 +62,7 @@ const CategoryList = () => {
             onClick={() => setIsOpen(false)}
           >
             <div
-              className="bg-white p-6 relative rounded-lg shadow-lg w-120 max-w-[90%]"
+              className="bg-white p-6 relative rounded-[20px] shadow-lg w-120 max-w-[90%] flex flex-col gap-6"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -72,9 +72,7 @@ const CategoryList = () => {
                 ×
               </button>
 
-              <h2 className="text-lg font-bold mb-4 text-center">
-                Select Category
-              </h2>
+              <h2 className="text-xl font-medium">Select Category</h2>
 
               <ul className="max-h-[60vh] overflow-y-auto p-2 custom-scrollbar">
                 {categories.map((category) => (

@@ -18,16 +18,16 @@ const Header = () => {
 
   return (
     <header className="bg-white p-4 shadow-md flex items-center justify-between">
-      <div className="w-10 flex-shrink-0">
+      <div className="flex-shrink-0">
         <button
           onClick={() => setIsOpen(true)}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer transition-colors shadow-md"
+          className="w-[42px] h-[42px] flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer transition-colors shadow-md"
         >
           <img src={locationIcon} alt="Location Icon" />
         </button>
       </div>
 
-      <h1 className="text-xl font-medium text-center flex-1">
+      <h1 className="text-2xl font-medium text-center flex-1">
         Restaurant name
       </h1>
 
@@ -39,7 +39,7 @@ const Header = () => {
           onClick={closeModal}
         >
           <div
-            className="bg-white p-6 relative rounded-lg shadow-lg w-120 max-w-[90%]"
+            className="bg-white p-6 relative rounded-[20px] shadow-lg w-120 max-w-[90%] flex flex-col gap-6"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -49,7 +49,7 @@ const Header = () => {
               ×
             </button>
 
-            <h2 className="text-lg font-bold mb-4">Select Location</h2>
+            <h2 className="text-xl font-medium">Select Location</h2>
 
             <ul className="max-h-[60vh] overflow-y-auto custom-scrollbar p-2">
               {LOCATIONS.map((loc) => (

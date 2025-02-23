@@ -62,11 +62,11 @@ const ProductList = ({ category }) => {
         return (
           <div
             key={name}
-            className={`p-2 custom-boxShadow bg-white rounded-[18px] flex items-center border-2 ${
+            className={`p-2 custom-boxShadow bg-white rounded-[18px] flex items-center border-2 gap-4 ${
               inCart ? 'border-brandYellow' : 'border-transparent'
             }`}
           >
-            <div className="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-200">
+            <div className="w-23 h-23 flex-shrink-0 rounded-[18px] overflow-hidden bg-gray-200">
               <img
                 src={placeholderImage}
                 alt="Placeholder"
@@ -74,38 +74,46 @@ const ProductList = ({ category }) => {
               />
             </div>
 
-            <div className="flex-1 px-4">
+            <div className="flex flex-col flex-1 gap-y-2">
               <h3 className="font-bold text-lg">{name}</h3>
               <h4 className="text-gray-500 text-sm">{french_name}</h4>
-              <p className="text-lg font-semibold">€{rating_quality}</p>
-            </div>
 
-            <div className="flex items-end h-full gap-2">
-              {inCart && (
-                <button
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 transition-colors cursor-pointer custom-boxShadow"
-                  onClick={() => dispatch(removeFromCart(name))}
-                >
-                  <img src={minusIcon} alt="Minus Icon" />
-                </button>
-              )}
+              <div className="flex items-end justify-between">
+                <div className="flex gap-3">
+                  <p className="text-lg font-semibold">€{rating_quality}</p>
+                  <p className="text-lg font-semibold text-gray-500 opacity-60 line-through">
+                    €6.00
+                  </p>
+                </div>
 
-              {inCart && (
-                <span className="text-lg font-semibold">{quantity}</span>
-              )}
+                <div className="flex h-full gap-2">
+                  {inCart && (
+                    <button
+                      className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 transition-colors cursor-pointer custom-boxShadow"
+                      onClick={() => dispatch(removeFromCart(name))}
+                    >
+                      <img src={minusIcon} alt="Minus Icon" />
+                    </button>
+                  )}
 
-              <button
-                className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer ${
-                  inCart
-                    ? 'bg-white hover:bg-gray-200 custom-boxShadow'
-                    : 'bg-brandYellow hover:bg-yellow-600'
-                }`}
-                onClick={() =>
-                  dispatch(addToCart({ name, french_name, rating_quality }))
-                }
-              >
-                <img src={plusIcon} alt="Plus Icon" />
-              </button>
+                  {inCart && (
+                    <span className="text-2xl font-semibold">{quantity}</span>
+                  )}
+
+                  <button
+                    className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer ${
+                      inCart
+                        ? 'bg-white hover:bg-gray-200 custom-boxShadow'
+                        : 'bg-brandYellow hover:bg-yellow-600'
+                    }`}
+                    onClick={() =>
+                      dispatch(addToCart({ name, french_name, rating_quality }))
+                    }
+                  >
+                    <img src={plusIcon} alt="Plus Icon" />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         );
