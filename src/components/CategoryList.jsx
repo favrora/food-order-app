@@ -30,7 +30,7 @@ const CategoryList = () => {
     : categories;
 
   return (
-    <div className="p-4 flex gap-2">
+    <div className="px-4 pt-4 flex gap-2">
       <div>
         <button
           onClick={() => setIsOpen(true)}
@@ -40,7 +40,7 @@ const CategoryList = () => {
         </button>
       </div>
 
-      <div className="py-4 flex items-center gap-2 overflow-x-auto whitespace-nowrap custom-scrollbar">
+      <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
         {/* Display categories */}
         <div className="flex gap-2">
           {sortedCategories.map((category) => (
@@ -62,7 +62,7 @@ const CategoryList = () => {
             onClick={() => setIsOpen(false)}
           >
             <div
-              className="bg-white p-6 rounded-lg shadow-lg w-80 relative"
+              className="bg-white p-6 relative rounded-lg shadow-lg w-120 max-w-[90%]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -76,7 +76,7 @@ const CategoryList = () => {
                 Select Category
               </h2>
 
-              <ul className="max-h-60 overflow-y-auto p-2 custom-scrollbar">
+              <ul className="max-h-[60vh] overflow-y-auto p-2 custom-scrollbar">
                 {categories.map((category) => (
                   <li
                     key={category}

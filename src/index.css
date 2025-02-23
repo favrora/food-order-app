@@ -16,6 +16,14 @@
     background-color: #e3e3e3;
   }
 
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
   .text-brandYellow {
     color: #f9ba42;
   }

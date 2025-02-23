@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearCart } from '../redux/slices/cartSlice';
+import { setLocation } from '../redux/slices/locationSlice';
 import OrderStatus from './OrderStatus';
 import PropTypes from 'prop-types';
 import locationIcon from '../assets/icons/location.svg';
@@ -20,8 +21,10 @@ const CheckoutForm = ({ onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +32,7 @@ const CheckoutForm = ({ onClose }) => {
 
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
+    dispatch(setLocation(formData.address));
     setIsSubmitting(false);
     dispatch(clearCart());
     setIsOrderPlaced(true);
@@ -42,7 +46,7 @@ const CheckoutForm = ({ onClose }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white p-6 rounded-2xl shadow-lg w-96 relative flex flex-col gap-4"
+        className="bg-white p-6 rounded-lg shadow-lg w-120 max-w-[90%] relative flex flex-col gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <button

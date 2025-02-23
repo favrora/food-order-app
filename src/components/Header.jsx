@@ -1,22 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLocation } from '../redux/slices/locationSlice';
 import locationIcon from '../assets/icons/location.svg';
-
-const locations = ['New York', 'Los Angeles', 'Chicago', 'Dubai', 'London'];
+import { LOCATIONS } from '../config';
 
 const Header = () => {
   const dispatch = useDispatch();
+  const selectedAddress = useSelector((state) => state.location);
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    const savedLocation = localStorage.getItem('selectedLocation');
-    if (savedLocation) dispatch(setLocation(savedLocation));
-  }, [dispatch]);
 
   const handleSelect = (location) => {
     dispatch(setLocation(location));
-    localStorage.setItem('selectedLocation', location);
     setIsOpen(false);
   };
 
@@ -42,26 +36,30 @@ const Header = () => {
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-          onClick={closeModal} // Close modal when clicking outside
+          onClick={closeModal}
         >
           <div
-            className="bg-white p-6 rounded-lg shadow-lg w-80 relative"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+            className="bg-white p-6 relative rounded-lg shadow-lg w-120 max-w-[90%]"
+            onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={closeModal}
-              className="absolute top-3 right-3 w-10 h-10 flex cursor-pointer items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[25px] font-bold transition-colors shadow-md cursor pointer"
+              className="absolute top-3 right-3 w-10 h-10 flex cursor-pointer items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[25px] font-bold transition-colors shadow-md"
             >
               ×
             </button>
 
             <h2 className="text-lg font-bold mb-4">Select Location</h2>
 
-            <ul className="max-h-60 overflow-y-auto custom-scrollbar p-2">
-              {locations.map((loc) => (
+            <ul className="max-h-[60vh] overflow-y-auto custom-scrollbar p-2">
+              {LOCATIONS.map((loc) => (
                 <li
                   key={loc}
-                  className="p-3 hover:bg-gray-200 cursor-pointer rounded text-center"
+                  className={`p-3 cursor-pointer rounded text-center transition-colors ${
+                    loc === selectedAddress
+                      ? 'bg-brandYellow text-black'
+                      : 'hover:bg-gray-200'
+                  }`}
                   onClick={() => handleSelect(loc)}
                 >
                   {loc}

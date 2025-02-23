@@ -57,7 +57,9 @@ const OrderStatus = ({ onClose }) => {
           ) : (
             <div className="w-6 h-6 rounded-full bg-gray-200"></div>
           )}
-          <p className={status === 1 && 'text-brandYellow'}>Order is sent</p>
+          <p className={`${status === 1 ? 'text-brandYellow' : ''}`}>
+            Order is sent
+          </p>
         </div>
 
         <div className="flex flex-col items-center text-gray-400">
