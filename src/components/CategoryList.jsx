@@ -40,7 +40,7 @@ const CategoryList = () => {
       <div className="py-4">
         <button
           onClick={openModal}
-          className="w-[43px] h-[43px] flex items-center justify-center bg-brandYellow custom-boxShadow hover:bg-yellow-600 rounded-full cursor-pointer"
+          className="w-[43px] h-[43px] flex items-center justify-center bg-brandYellow custom-boxShadow hover:bg-yellow-600 transition-colors rounded-full cursor-pointer"
         >
           <img src={arrowDownIcon} alt="Arrow Down Icon" />
         </button>

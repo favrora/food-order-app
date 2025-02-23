@@ -12,7 +12,7 @@ const LocationModal = ({ selectedAddress, onSelect, onClose }) => (
     >
       <button
         onClick={onClose}
-        className="absolute top-3 right-3 w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[25px] font-bold transition-colors shadow-md"
+        className="absolute top-3 right-3 w-10 h-10 flex items-center cursor-pointer justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[25px] font-bold transition-colors shadow-md"
       >
         ×
       </button>

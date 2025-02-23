@@ -101,7 +101,7 @@ const CheckoutForm = ({ onClose }) => {
           <button
             type="submit"
             className="w-full bg-brandYellow hover:bg-yellow-600 transition-colors text-black cursor-pointer 
-              rounded-full py-2 text-lg shadow-[0px_4px_12px_0px_#F9BA4266] disabled:bg-gray-200 disabled:cursor-not-allowed"
+              rounded-full py-2 text-lg shadow-[0px_4px_12px_0px_#F9BA4266] disabled:bg-gray-200 disabled:cursor-not-allowed disabled:shadow-none"
             disabled={isDisabled}
           >
             {isLoading ? 'Sending...' : 'Submit'}
