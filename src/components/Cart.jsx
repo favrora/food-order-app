@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, removeFromCart } from '../redux/slices/cartSlice';
 import CheckoutForm from './CheckoutForm';
+import shoppingCartIcon from '../assets/icons/shopping-cart.svg';
+import plusIcon from '../assets/icons/plus.svg';
+import minusIcon from '../assets/icons/minus.svg';
 
 const Cart = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,18 +17,20 @@ const Cart = () => {
   return (
     <>
       {/* Floating cart button */}
-      <button
-        className="fixed bottom-4 right-4 bg-yellow-500 hover:bg-yellow-600 text-black rounded-full w-20 h-20 transition-colors flex flex-col items-center justify-center text-xl font-bold shadow-lg cursor-pointer"
-        onClick={() => setIsOpen(true)}
-      >
-        <span className="text-sm mt-1">{total.toFixed(2)} €</span>
-        🛒
-      </button>
+      <div className="fixed bottom-4 right-0 p-2 custom-boxShadow bg-white rounded-tl-full rounded-bl-full">
+        <button
+          className="bg-brandYellow hover:bg-yellow-600 text-black rounded-full w-20 h-20 transition-colors flex flex-col items-center justify-center text-xl font-bold custom-boxShadow cursor-pointer"
+          onClick={() => setIsOpen(true)}
+        >
+          <span className="text-sm mb-1">{total.toFixed(2)} €</span>
+          <img src={shoppingCartIcon} alt="Shopping Cart Icon" />
+        </button>
+      </div>
 
       {/* Cart modal */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black/50 flex items-center justify-center"
           onClick={closeModal} // Close when clicking outside
         >
           <div
@@ -33,8 +38,8 @@ const Cart = () => {
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
           >
             <button
-              className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-xl font-bold transition-colors shadow-md cursor pointer"
               onClick={closeModal}
+              className="absolute top-3 right-3 w-10 h-10 flex cursor-pointer items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[25px] font-bold transition-colors shadow-md cursor pointer"
             >
               ×
             </button>
@@ -43,7 +48,7 @@ const Cart = () => {
             {items.length === 0 ? (
               <p>The cart is empty</p>
             ) : (
-              <ul className="mb-4">
+              <ul className="mb-4 p-2 max-h-60 overflow-y-auto custom-scrollbar">
                 {items.map((item) => (
                   <li
                     key={item.name}
@@ -53,10 +58,10 @@ const Cart = () => {
 
                     <div className="flex items-center gap-2">
                       <button
-                        className="w-8 h-8 flex items-center justify-center border border-gray-300 cursor-pointer rounded-full bg-white hover:bg-gray-200 transition-colors text-black font-bold"
+                        className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 transition-colors cursor-pointer custom-boxShadow"
                         onClick={() => dispatch(removeFromCart(item.name))}
                       >
-                        -
+                        <img src={minusIcon} alt="Minus Icon" />
                       </button>
 
                       <span className="text-lg font-semibold">
@@ -64,10 +69,10 @@ const Cart = () => {
                       </span>
 
                       <button
-                        className="w-8 h-8 flex items-center justify-center border border-gray-300 cursor-pointer rounded-full bg-white hover:bg-gray-200 transition-colors text-black font-bold"
+                        className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 transition-colors cursor-pointer custom-boxShadow"
                         onClick={() => dispatch(addToCart(item))}
                       >
-                        +
+                        <img src={plusIcon} alt="Plus Icon" />
                       </button>
                     </div>
                   </li>
@@ -80,7 +85,7 @@ const Cart = () => {
             </p>
 
             <button
-              className="w-full bg-green-500 text-white rounded-full py-2 text-lg font-bold"
+              className="w-full bg-brandYellow hover:bg-yellow-600 transition-colors text-black cursor-pointer rounded-full py-2 text-lg font-medium custom-boxShadow"
               onClick={() => {
                 setIsOpen(false);
                 setIsCheckout(true);

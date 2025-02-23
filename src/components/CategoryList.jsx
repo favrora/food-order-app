@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetCategoriesQuery } from '../services/api';
 import { setCategory } from '../redux/slices/categorySlice';
+import arrowDownIcon from '../assets/icons/arrow-down.svg';
 
 const CategoryList = () => {
   const dispatch = useDispatch();
@@ -33,20 +34,20 @@ const CategoryList = () => {
       <div>
         <button
           onClick={() => setIsOpen(true)}
-          className="p-2 my-4 mx-2 flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 rounded-full cursor-pointer"
+          className="w-[40px] h-[40px] p-2 my-4 flex items-center justify-center bg-brandYellow hover:bg-yellow-600 rounded-full cursor-pointer"
         >
-          ⬇️
+          <img src={arrowDownIcon} alt="Arrow Down Icon" />
         </button>
       </div>
 
-      <div className="p-4 flex items-center gap-2 overflow-x-auto whitespace-nowrap custom-scrollbar">
+      <div className="py-4 flex items-center gap-2 overflow-x-auto whitespace-nowrap custom-scrollbar">
         {/* Display categories */}
         <div className="flex gap-2">
           {sortedCategories.map((category) => (
             <button
               key={category}
               className={`px-4 py-2 rounded-full cursor-pointer transition-colors 
-                ${category === selectedCategory ? 'bg-yellow-500 text-black hover:bg-yellow-600' : 'bg-white text-black hover:bg-gray-200'}`}
+                ${category === selectedCategory ? 'bg-brandYellow text-black hover:bg-yellow-600' : 'bg-white text-black hover:bg-gray-200'}`}
               onClick={() => dispatch(setCategory(category))}
             >
               {category}
@@ -57,7 +58,7 @@ const CategoryList = () => {
         {/* Category selection dialog */}
         {isOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
             onClick={() => setIsOpen(false)}
           >
             <div
@@ -66,7 +67,7 @@ const CategoryList = () => {
             >
               <button
                 onClick={() => setIsOpen(false)}
-                className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-xl font-bold transition-colors shadow-md cursor-pointer"
+                className="absolute top-3 right-3 w-10 h-10 flex cursor-pointer items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[25px] font-bold transition-colors shadow-md cursor pointer"
               >
                 ×
               </button>
@@ -75,12 +76,12 @@ const CategoryList = () => {
                 Select Category
               </h2>
 
-              <ul className="max-h-60 overflow-y-auto p-2">
+              <ul className="max-h-60 overflow-y-auto p-2 custom-scrollbar">
                 {categories.map((category) => (
                   <li
                     key={category}
                     className={`p-3 cursor-pointer rounded break-words whitespace-normal 
-                      ${selectedCategory === category ? 'bg-yellow-500 hover:bg-yellow-600' : 'hover:bg-gray-200'}`}
+                      ${selectedCategory === category ? 'bg-brandYellow hover:bg-yellow-600' : 'hover:bg-gray-200'}`}
                     onClick={() => {
                       dispatch(setCategory(category));
                       setIsOpen(false);

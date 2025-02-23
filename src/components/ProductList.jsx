@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../redux/slices/cartSlice';
 import { useGetProductsByCategoryQuery } from '../services/api';
 import PropTypes from 'prop-types';
+import plusIcon from '../assets/icons/plus.svg';
+import minusIcon from '../assets/icons/minus.svg';
 
 const ProductList = ({ category }) => {
   const dispatch = useDispatch();
@@ -26,8 +28,8 @@ const ProductList = ({ category }) => {
         return (
           <div
             key={name}
-            className={`p-4 shadow-md bg-white rounded-xl flex items-center justify-between border ${
-              inCart ? 'border-yellow-500' : 'border-gray-300'
+            className={`p-4 custom-boxShadow bg-white rounded-[18px] gap-2 flex items-end justify-between border-2 ${
+              inCart ? 'border-brandYellow' : 'border-transparent'
             }`}
           >
             <div>
@@ -39,10 +41,10 @@ const ProductList = ({ category }) => {
             <div className="flex items-center gap-2">
               {inCart && (
                 <button
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 transition-colors text-black font-bold cursor-pointer border border-gray-200"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-gray-200 transition-colors cursor-pointer custom-boxShadow"
                   onClick={() => dispatch(removeFromCart(name))}
                 >
-                  -
+                  <img src={minusIcon} alt="Minus Icon" />
                 </button>
               )}
 
@@ -51,16 +53,16 @@ const ProductList = ({ category }) => {
               )}
 
               <button
-                className={`w-8 h-8 flex items-center justify-center rounded-full font-bold transition-colors text-black cursor-pointer ${
+                className={`w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer ${
                   inCart
-                    ? 'bg-white hover:bg-gray-200 border border-gray-200'
-                    : 'bg-yellow-500 hover:bg-yellow-600'
+                    ? 'bg-white hover:bg-gray-200 custom-boxShadow'
+                    : 'bg-brandYellow hover:bg-yellow-600'
                 }`}
                 onClick={() =>
                   dispatch(addToCart({ name, french_name, rating_quality }))
                 }
               >
-                +
+                <img src={plusIcon} alt="Plus Icon" />
               </button>
             </div>
           </div>

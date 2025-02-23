@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clearCart } from '../redux/slices/cartSlice';
 import OrderStatus from './OrderStatus';
 import PropTypes from 'prop-types';
+import locationIcon from '../assets/icons/location.svg';
+import phoneIcon from '../assets/icons/phone.svg';
+import commentIcon from '../assets/icons/comment.svg';
 
 const CheckoutForm = ({ onClose }) => {
   const selectedAddress = useSelector((state) => state.location);
@@ -35,7 +38,7 @@ const CheckoutForm = ({ onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      className="fixed inset-0 bg-black/50 flex items-center justify-center"
       onClick={onClose}
     >
       <div
@@ -43,22 +46,22 @@ const CheckoutForm = ({ onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-xl font-bold transition-colors shadow-md cursor pointer"
           onClick={onClose}
+          className="absolute top-3 right-3 w-10 h-10 flex cursor-pointer items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[25px] font-bold transition-colors shadow-md cursor pointer"
         >
           ×
         </button>
 
-        <h2 className="text-xl font-bold">Enter delivery data</h2>
+        <h2 className="text-xl font-medium">Enter delivery data</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Delivery Address */}
           <div className="flex items-center w-full">
-            <span className="w-8 text-xl mr-2">📍</span>
+            <span className="w-8 text-xl mr-2">
+              <img src={locationIcon} alt="Location Icon" />
+            </span>
             <div className="w-full">
-              <label className="block text-gray-700 font-medium mb-1">
-                Delivery address
-              </label>
+              <label className="block mb-1">Delivery address</label>
               <input
                 type="text"
                 name="address"
@@ -73,11 +76,11 @@ const CheckoutForm = ({ onClose }) => {
 
           {/* Phone Number */}
           <div className="flex items-center w-full">
-            <span className="w-8 text-xl mr-2">📞</span>
+            <span className="w-8 text-xl mr-2">
+              <img src={phoneIcon} alt="Phone Icon" />
+            </span>
             <div className="w-full">
-              <label className="block text-gray-700 font-medium mb-1">
-                Phone number
-              </label>
+              <label className="block mb-1">Phone number</label>
               <input
                 type="tel"
                 name="phone"
@@ -92,11 +95,11 @@ const CheckoutForm = ({ onClose }) => {
 
           {/* Comment to Courier */}
           <div className="flex items-center w-full">
-            <span className="w-8 text-xl mr-2">💬</span>
+            <span className="w-8 text-xl mr-2">
+              <img src={commentIcon} alt="Comment Icon" />
+            </span>
             <div className="w-full">
-              <label className="block text-gray-700 font-medium mb-1">
-                Comment to courier
-              </label>
+              <label className="block mb-1">Comment to courier</label>
               <input
                 type="text"
                 name="comment"
@@ -110,7 +113,7 @@ const CheckoutForm = ({ onClose }) => {
 
           <button
             type="submit"
-            className="w-full bg-yellow-500 text-black rounded-full py-3 text-lg font-bold transition-colors hover:bg-yellow-600 active:bg-yellow-700 shadow-md"
+            className="w-full bg-brandYellow hover:bg-yellow-600 transition-colors text-black cursor-pointer rounded-full py-2 text-lg font-medium custom-boxShadow"
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Processing...' : 'Submit'}

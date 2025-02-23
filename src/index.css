@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-/* Custom Scrollbar Styles */
+/* Custom Styles */
 @layer utilities {
   .custom-scrollbar::-webkit-scrollbar {
     width: 8px;
@@ -14,5 +14,21 @@
 
   .custom-scrollbar::-webkit-scrollbar-track {
     background-color: #e3e3e3;
+  }
+
+  .text-brandYellow {
+    color: #f9ba42;
+  }
+
+  .bg-brandYellow {
+    background-color: #f9ba42;
+  }
+
+  .border-brandYellow {
+    border-color: #f9ba42;
+  }
+
+  .custom-boxShadow {
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
   }
 }

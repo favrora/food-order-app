@@ -1,8 +1,38 @@
-# React + Vite
+# Food Order App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Description here
 
-Currently, two official plugins are available:
+## Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Guess The Number](https://github.com/favrora/food-order-app/blob/master/public/favicon.png?raw=true)
+
+## Features
+
+- ..
+
+### Built With
+
+- React.js
+- Redux
+- Tailwind CSS
+- Prettier
+- Vite
+
+## Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/favrora/food-order-app.git
+   ```
+2. From the root, install NPM packages
+   ```sh
+   npm install
+   ```
+3. Start the vite app:
+   ```sh
+   npm run dev
+   ```
