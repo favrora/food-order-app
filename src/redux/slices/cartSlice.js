@@ -17,15 +17,21 @@ const cartSlice = createSlice({
       const existingItem = state.items.find(
         (item) => item.name === payload.name
       );
+
+      const newQuantity =
+        payload.quantity ?? (existingItem ? existingItem.quantity + 1 : 1);
+
       if (existingItem) {
-        existingItem.quantity += 1;
+        state.total +=
+          (newQuantity - existingItem.quantity) *
+          parseFloat(existingItem.rating_quality);
+        existingItem.quantity = newQuantity;
       } else {
-        state.items.push({ ...payload, quantity: 1 });
+        state.items.push({ ...payload, quantity: newQuantity });
+        state.total += newQuantity * parseFloat(payload.rating_quality);
       }
-      state.total = Math.max(
-        0,
-        state.total + parseFloat(payload.rating_quality)
-      );
+
+      state.total = Math.max(0, state.total);
       saveCartToStorage(state);
     },
 
@@ -43,6 +49,15 @@ const cartSlice = createSlice({
       saveCartToStorage(state);
     },
 
+    clearItemFromCart: (state, { payload }) => {
+      state.items = state.items.filter((item) => item.name !== payload);
+      state.total = state.items.reduce(
+        (sum, item) => sum + item.quantity * parseFloat(item.rating_quality),
+        0
+      );
+      saveCartToStorage(state);
+    },
+
     clearCart: (state) => {
       state.items = [];
       state.total = 0;
@@ -57,6 +72,12 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, loadCart } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  clearItemFromCart,
+  clearCart,
+  loadCart,
+} = cartSlice.actions;
+
 export default cartSlice.reducer;

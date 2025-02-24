@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, removeFromCart } from '../redux/slices/cartSlice';
+import {
+  addToCart,
+  removeFromCart,
+  clearItemFromCart,
+} from '../redux/slices/cartSlice';
 import { useGetProductsByCategoryQuery } from '../services/api';
 import PropTypes from 'prop-types';
 import plusIcon from '../assets/icons/plus.svg';
@@ -94,7 +98,9 @@ const ProductList = ({ category }) => {
 
                 <div className="flex items-end justify-between">
                   <div className="flex gap-3">
-                    <p className="text-lg font-semibold">€{rating_quality}</p>
+                    <p className="text-lg font-semibold">
+                      €{Number(rating_quality).toFixed(2)}
+                    </p>
                     <p className="text-lg font-semibold text-gray-500 opacity-60 line-through">
                       €6.00
                     </p>
@@ -110,9 +116,13 @@ const ProductList = ({ category }) => {
                           <img src={minusIcon} alt="Minus Icon" />
                         </button>
 
-                        <span className="text-2xl font-semibold">
-                          {quantity}
-                        </span>
+                        <QuantityInput
+                          name={name}
+                          french_name={french_name}
+                          rating_quality={rating_quality}
+                          quantity={quantity}
+                          dispatch={dispatch}
+                        />
                       </>
                     )}
 
@@ -141,8 +151,58 @@ const ProductList = ({ category }) => {
   );
 };
 
+const QuantityInput = ({
+  name,
+  french_name,
+  rating_quality,
+  quantity,
+  dispatch,
+}) => {
+  const [inputValue, setInputValue] = useState(quantity > 0 ? quantity : '');
+
+  useEffect(() => {
+    setInputValue(quantity > 0 ? quantity : '');
+  }, [quantity]);
+
+  const handleQuantityChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleQuantityBlur = () => {
+    const parsedValue = parseInt(inputValue, 10);
+
+    if (Number.isNaN(parsedValue) || parsedValue <= 0) {
+      dispatch(clearItemFromCart(name));
+    } else {
+      dispatch(
+        addToCart({ name, french_name, rating_quality, quantity: parsedValue })
+      );
+    }
+  };
+
+  return (
+    <input
+      type="number"
+      min="1"
+      value={inputValue}
+      onChange={handleQuantityChange}
+      onBlur={handleQuantityBlur}
+      className="w-12 text-center text-2xl font-semibold border border-gray-300 rounded-md"
+    />
+  );
+};
+
 ProductList.propTypes = {
   category: PropTypes.string,
+};
+
+QuantityInput.propTypes = {
+  name: PropTypes.string.isRequired,
+  french_name: PropTypes.string.isRequired,
+  rating_quality: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  quantity: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default ProductList;

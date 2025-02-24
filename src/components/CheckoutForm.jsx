@@ -5,6 +5,7 @@ import { clearCart } from '../redux/slices/cartSlice';
 import { setLocation } from '../redux/slices/locationSlice';
 import OrderStatus from './OrderStatus';
 import PropTypes from 'prop-types';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import locationIcon from '../assets/icons/location-delivery.svg';
 import phoneIcon from '../assets/icons/phone.svg';
 import commentIcon from '../assets/icons/comment.svg';
@@ -21,14 +22,29 @@ const CheckoutForm = ({ onClose }) => {
     comment: '',
   });
 
+  const [phoneError, setPhoneError] = useState('');
+
+  const validatePhone = (phone) => {
+    const phoneNumber = parsePhoneNumberFromString(phone);
+    if (!phoneNumber || !phoneNumber.isValid()) {
+      return 'Invalid phone number format';
+    }
+    return '';
+  };
+
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === 'phone') {
+      const errorMessage = validatePhone(value);
+      setPhoneError(errorMessage);
+    }
   }, []);
 
   const isDisabled = useMemo(
-    () => isLoading || cartItems.length === 0,
-    [isLoading, cartItems]
+    () => isLoading || cartItems.length === 0 || phoneError || !formData.phone,
+    [isLoading, cartItems, phoneError, formData.phone]
   );
 
   const handleSubmit = useCallback(
@@ -77,16 +93,21 @@ const CheckoutForm = ({ onClose }) => {
           />
 
           {/* Phone Number */}
-          <InputField
-            icon={phoneIcon}
-            label="Phone number"
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="+370"
-            required
-          />
+          <div>
+            <InputField
+              icon={phoneIcon}
+              label="Phone number"
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="+370"
+              required
+            />
+            {phoneError && (
+              <p className="text-red-500 text-sm ml-11">{phoneError}</p>
+            )}
+          </div>
 
           {/* Comment to Courier */}
           <InputField

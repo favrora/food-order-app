@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetCategoriesQuery } from '../services/api';
 import { setCategory } from '../redux/slices/categorySlice';
@@ -15,13 +15,6 @@ const CategoryList = () => {
 
   const openModal = useCallback(() => setIsOpen(true), []);
   const closeModal = useCallback(() => setIsOpen(false), []);
-
-  const sortedCategories = useMemo(() => {
-    if (!categories) return [];
-    return selectedCategory
-      ? [selectedCategory, ...categories.filter((c) => c !== selectedCategory)]
-      : categories;
-  }, [selectedCategory, categories]);
 
   if (isLoading)
     return <p className="text-center text-gray-500">Loading categories...</p>;
@@ -48,7 +41,7 @@ const CategoryList = () => {
 
       <div className="flex items-center py-4 gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
         <div className="flex h-full gap-2">
-          {sortedCategories.map((category) => (
+          {categories.map((category) => (
             <button
               key={category}
               className={`px-4 py-2 rounded-full cursor-pointer transition-colors custom-boxShadow 
